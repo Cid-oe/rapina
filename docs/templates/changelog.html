@@ -20,6 +20,7 @@
                 <ul>
                     <li>Column attributes on composite primary keys: respect <code>#[column = "..."]</code> and <code>column_type</code> on composite primary key fields in <code>schema!</code> macro</li>
                 </ul>
+                <p class="timeline-contributors">Contributors: <a href="https://github.com/arferreira">@arferreira</a>, <a href="https://github.com/ShiraiEd">@ShiraiEd</a>, <a href="https://github.com/Ismaellima4">@Ismaellima4</a>, <a href="https://github.com/Isvane">@Isvane</a>, <a href="https://github.com/CapThunder19">@CapThunder19</a></p>
             </div>
         </div>
 
@@ -44,7 +45,10 @@
                     <li>Validation error serialization logging for <code>Validated&lt;Json&lt;T&gt;&gt;</code> and <code>Validated&lt;Form&lt;T&gt;&gt;</code></li>
                     <li>Build-time duplicate OpenAPI operation ID validation</li>
                     <li>Fast-fail JWT audience validation when <code>validate_aud = true</code></li>
+                    <li><code>with_tracing</code> now installs the tracing subscriber when the server starts (in <code>listen</code>) rather than at call time, so it composes with the OTLP export layer on a single global subscriber</li>
+                    <li>AGENTS.md and bundled agent docs now mention the llms.txt endpoint</li>
                 </ul>
+                <p class="timeline-contributors">Contributors: <a href="https://github.com/arferreira">@arferreira</a>, <a href="https://github.com/richasdev">@richasdev</a>, <a href="https://github.com/ShiraiEd">@ShiraiEd</a>, <a href="https://github.com/Ismaellima4">@Ismaellima4</a>, <a href="https://github.com/Kkkakania">@Kkkakania</a>, <a href="https://github.com/RodrigoSikoski">@RodrigoSikoski</a>, <a href="https://github.com/mvanhorn">@mvanhorn</a>, <a href="https://github.com/haider855">@haider855</a>, <a href="https://github.com/GHX5T-SOL">@GHX5T-SOL</a></p>
             </div>
         </div>
 
@@ -66,7 +70,9 @@
                     <li>Unified type system across codegen, schema, and OpenAPI layers</li>
                     <li>Cache invalidation for all ancestor collection prefixes on mutation</li>
                     <li>Fixed <code>schema!</code> macro rejecting unsigned integer types with clear compile-time error</li>
+                    <li><code>schema!</code> now rejects unsigned integer types (<code>u8</code>–<code>u64</code>) at compile time instead of silently mapping them to signed columns, use <code>i32</code>/<code>i64</code>, or <code>Decimal</code> for the full unsigned range</li>
                 </ul>
+                <p class="timeline-contributors">Contributors: <a href="https://github.com/richasdev">@richasdev</a>, <a href="https://github.com/arferreira">@arferreira</a>, <a href="https://github.com/ShiraiEd">@ShiraiEd</a>, <a href="https://github.com/juv">@juv</a>, <a href="https://github.com/Ismaellima4">@Ismaellima4</a>, <a href="https://github.com/mvanhorn">@mvanhorn</a>, <a href="https://github.com/josemoura212">@josemoura212</a>, <a href="https://github.com/CapThunder19">@CapThunder19</a>, <a href="https://github.com/chiucchi">@chiucchi</a>, <a href="https://github.com/apetrovic6">@apetrovic6</a>, <a href="https://github.com/xingzihai">@xingzihai</a></p>
             </div>
         </div>
 
@@ -80,6 +86,7 @@
                     <li>Tower compatibility layer behind <code>tower</code> feature with <code>TowerLayerMiddleware</code>, <code>RapinaService</code>, and <code>.layer()</code> builder</li>
                     <li><code>NextService</code> Clone support for Tower layers requiring Clone on the inner service</li>
                 </ul>
+                <p class="timeline-contributors">Contributors: <a href="https://github.com/lucaserm">@lucaserm</a>, <a href="https://github.com/ShiraiEd">@ShiraiEd</a>, <a href="https://github.com/richasdev">@richasdev</a>, <a href="https://github.com/arferreira">@arferreira</a>, <a href="https://github.com/sarpedondev">@sarpedondev</a>, <a href="https://github.com/juv">@juv</a>, <a href="https://github.com/Judel777">@Judel777</a>, <a href="https://github.com/Ismaellima4">@Ismaellima4</a>, <a href="https://github.com/warwickmei">@warwickmei</a>, <a href="https://github.com/chiucchi">@chiucchi</a>, <a href="https://github.com/Spartan09">@Spartan09</a></p>
             </div>
         </div>
 
@@ -103,7 +110,11 @@
                     <li>Compression gated behind <code>compression</code> feature flag</li>
                     <li>Macro preserves <code>mut</code> on handler arguments</li>
                     <li>URL shortener full example with database, migrations, and tests</li>
+                    <li>body-consuming extractors (<code>Json</code>, <code>Form</code>, <code>Validated</code>) must now be the last handler parameter enforced by the compiler; all other arguments use <code>FromRequestParts</code></li>
+                    <li><code>put_named</code> and <code>delete_named</code> convenience methods on Router</li>
+                    <li>PathParams backed by SmallVec, no heap allocation up to 4 params</li>
                 </ul>
+                <p class="timeline-contributors">Contributors: <a href="https://github.com/lucaserm">@lucaserm</a>, <a href="https://github.com/arferreira">@arferreira</a>, <a href="https://github.com/richasdev">@richasdev</a>, <a href="https://github.com/ShiraiEd">@ShiraiEd</a>, <a href="https://github.com/juv">@juv</a>, <a href="https://github.com/Ismaellima4">@Ismaellima4</a>, <a href="https://github.com/yan-pi">@yan-pi</a>, <a href="https://github.com/tjweir">@tjweir</a>, <a href="https://github.com/chiucchi">@chiucchi</a></p>
             </div>
         </div>
 
