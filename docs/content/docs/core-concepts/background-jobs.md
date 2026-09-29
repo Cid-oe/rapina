@@ -151,7 +151,7 @@ JobConfig::default()
 | `poll_interval` | 5s | How often the worker wakes up to claim jobs |
 | `batch_size` | 10 | Maximum jobs claimed per poll cycle |
 | `queues` | `["default"]` | Queue names to subscribe to |
-| `job_timeout` | 30s | How long a job lock is held — expired locks can be reclaimed after a worker crash |
+| `job_timeout` | 30s | How long a job lock is held; expired locks can be reclaimed after a worker crash, on the next poll cycle |
 
 ## Job Lifecycle
 
@@ -163,6 +163,10 @@ pending → running → completed
 The worker transitions each claimed job from `pending` to `running` while preventing duplicate claims. PostgreSQL uses a CTE with `FOR UPDATE SKIP LOCKED`. MySQL uses a transaction that selects rows with `FOR UPDATE SKIP LOCKED`, updates them, and then fetches the updated rows because MySQL does not support `UPDATE ... RETURNING`. SQLite uses one `UPDATE ... WHERE id IN (...) ... RETURNING` statement and relies on its single-writer model.
 
 On completion the job moves to `completed` or `failed`.
+
+A worker that dies mid-job (crash, `SIGKILL`, power loss) leaves the row in `running` with a stale `locked_until`. On each poll cycle the worker reaps expired leases: jobs with retry budget left return to `pending` and are claimed again on the next cycle (immediately, with no backoff delay), with the crashed run counted toward `attempts` exactly like an errored run, and jobs past `max_retries` are marked `failed` with a lease-expired `last_error`. Recovery latency is bounded by `job_timeout + poll_interval`. A panicking handler does not stop the worker: the panic is caught, logged at `error` level, and processed through the same retry path as an error. Under `panic = abort` there is nothing to catch, the process dies and the job is recovered like any other crash.
+
+Size `job_timeout` for the batch's worst case, `batch_size` times your slowest handler, or keep batches small. The lease is stamped for the whole batch when it is claimed, but jobs run one at a time, so a job near the end of a large batch can start with its lease already gone and run a second time on another worker. There is no heartbeat to renew the lease mid-run.
 
 Failed jobs are retried according to the `retry_policy` set on the handler.
 
